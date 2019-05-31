@@ -19,7 +19,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public final class SeparateThreadAsync extends Application {
-	private static final ExecutorService IO_EXECUTOR = Executors.newSingleThreadExecutor(r -> new Thread(r, "I/O Queue"));
+	private static final ExecutorService IO_EXECUTOR = Executors.newSingleThreadExecutor(r -> {
+		final Thread thread = new Thread(r, "I/O Queue");
+		thread.setDaemon(true);
+		return thread;
+	});
 
 	@Override
 	public void start(final Stage primaryStage) {
